@@ -1,0 +1,441 @@
+openapi: 3.0.3
+info:
+  title: Lazypandapy API
+  version: v1
+  description: LazyPanda API is API :)
+paths:
+  /api/v1/auth/account/profile/{id}/:
+    get:
+      operationId: api_v1_auth_account_profile_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+          description: ''
+  /api/v1/auth/account/sign_up/:
+    post:
+      operationId: api_v1_auth_account_sign_up_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSignUp'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserSignUp'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserSignUp'
+        required: true
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSignUp'
+          description: ''
+  /api/v1/auth/account/verify/:
+    put:
+      operationId: api_v1_auth_account_verify_update
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyToken'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerifyToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerifyToken'
+        required: true
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyToken'
+          description: ''
+    patch:
+      operationId: api_v1_auth_account_verify_partial_update
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedVerifyToken'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedVerifyToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedVerifyToken'
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyToken'
+          description: ''
+  /api/v1/auth/token/:
+    post:
+      operationId: api_v1_auth_token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /api/v1/auth/token/refresh/:
+    post:
+      operationId: api_v1_auth_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/v1/auth/token/verify/:
+    post:
+      operationId: api_v1_auth_token_verify_create
+      description: |-
+        Takes a token and indicates if it is valid.  This view provides no
+        information about a token's fitness for a particular use.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenVerify'
+          description: ''
+  /api/v1/products/:
+    get:
+      operationId: api_v1_products_list
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductList'
+          description: ''
+  /api/v1/products/product_detail/{slug}/:
+    get:
+      operationId: api_v1_products_product_detail_retrieve
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDetail'
+          description: ''
+components:
+  schemas:
+    PatchedVerifyToken:
+      type: object
+      properties:
+        number:
+          type: string
+        phone_token:
+          type: string
+          nullable: true
+          maxLength: 6
+    ProductDetail:
+      type: object
+      properties:
+        name:
+          type: string
+          title: Product name
+          description: 'format: required, max-200'
+          maxLength: 200
+        description:
+          type: string
+          title: Product description
+          description: 'format: required'
+        sale_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: 'format: maximum price 99999999.99'
+        image:
+          type: string
+          format: uri
+          nullable: true
+          title: Product image
+          description: 'format: not required'
+        alt_text:
+          type: string
+          nullable: true
+          title: Alternative text for image
+          description: 'format: not required'
+          maxLength: 200
+        is_active:
+          type: boolean
+          title: Product visibility
+          description: 'format: true=product visible'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Date product created
+          description: 'format: Y-m-d H:M:S'
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Date product last updated
+          description: 'format: Y-m-d H:M:S'
+      required:
+      - created_at
+      - description
+      - name
+      - sale_price
+      - updated_at
+    ProductList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Product name
+          description: 'format: required, max-200'
+          maxLength: 200
+        slug:
+          type: string
+          title: Product SAFE URL
+          description: 'format: required, letters, numbers etc'
+          maxLength: 200
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - id
+      - name
+    Profile:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user_name:
+          type: string
+          title: Username
+          maxLength: 255
+        phone_number:
+          type: string
+          maxLength: 13
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        avatar:
+          type: string
+          format: uri
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Date user created
+          description: 'format: Y-m-d H:M:S'
+      required:
+      - created_at
+      - id
+      - phone_number
+      - user_name
+    StatusEnum:
+      enum:
+      - CUSTOMER
+      - ADMINISTRATOR
+      type: string
+      description: |-
+        * `CUSTOMER` - Customer
+        * `ADMINISTRATOR` - Administrator
+    TokenObtainPair:
+      type: object
+      properties:
+        phone_number:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - password
+      - phone_number
+      - refresh
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    TokenVerify:
+      type: object
+      properties:
+        token:
+          type: string
+          writeOnly: true
+      required:
+      - token
+    UserSignUp:
+      type: object
+      properties:
+        user_name:
+          type: string
+          title: Username
+          maxLength: 255
+        phone_number:
+          type: string
+          maxLength: 13
+        expires_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+          title: Expiry time of token
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+      required:
+      - expires_at
+      - password
+      - phone_number
+      - user_name
+    VerifyToken:
+      type: object
+      properties:
+        number:
+          type: string
+        phone_token:
+          type: string
+          nullable: true
+          maxLength: 6
+      required:
+      - number
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
