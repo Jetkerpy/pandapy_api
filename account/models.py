@@ -59,7 +59,7 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
     avatar = models.ImageField(
         _("avatar"),
         upload_to = 'avatars',
-        default = 'avatars/no_photo.png'
+        default = 'avatars/99242731.png'
     )
 
     #User status
